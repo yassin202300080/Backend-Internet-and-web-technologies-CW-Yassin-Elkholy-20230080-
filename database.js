@@ -16,6 +16,16 @@ const db = new sqlite3.Database('./flashedu.db', (err) => {
             password TEXT NOT NULL,
             role TEXT NOT NULL CHECK(role IN ('Student', 'Staff'))
         )`);
+
+        ////create classrooms table
+        // staffId for linking class to the teacher 
+        db.run(`CREATE TABLE IF NOT EXISTS classrooms (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            classCode TEXT UNIQUE NOT NULL,
+            className TEXT NOT NULL,
+            staffId INTEGER,
+            FOREIGN KEY(staffId) REFERENCES users(id)
+        )`);
     }
 });
 
