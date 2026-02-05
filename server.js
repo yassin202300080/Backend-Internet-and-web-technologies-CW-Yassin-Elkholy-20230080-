@@ -5,6 +5,9 @@ const app = express();
 app.use(express.json());
 
 const db = require('./database');
+app.get('/', (req, res) => {
+    res.json({ message: "FlashEdu backend  running" });
+});
 
 const PORT = 3000;
 app.listen(PORT, () => {
