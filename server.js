@@ -9,6 +9,7 @@ const db = require('./database');
 const { register, login } = require('./controller/authController');
 const { createClassroom, joinClassroom } = require('./controller/classroomController');
 const verifyToken = require('./middleware/authMiddleware');
+const { createAssignment, getAssignments } = require('./controller/assignmentController');
 console.log('Register function imported:', typeof register);
 
 app.get('/', (req, res) => {
@@ -21,6 +22,8 @@ app.post('/api/login', login);
 app.post('/api/classrooms', verifyToken, createClassroom);
 app.post('/api/classrooms/join', verifyToken, joinClassroom);
 console.log('Route /api/register registered');
+app.post('/api/assignments', verifyToken, createAssignment);
+app.get('/api/assignments', verifyToken, getAssignments);
 
 const PORT = 3000;
 app.listen(PORT, () => {
