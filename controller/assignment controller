@@ -19,6 +19,14 @@ const createAssignment = (req, res) => {
             return res.status(404).json({ error: "Classroom not found" });
         }
 
+        //save assignemnt
+        const sql = `INSERT INTO assignments (title, description, dueDate, classroomId) VALUES (?, ?, ?, ?)`;
+        
+        db.run(sql, [title, description, dueDate, classroom.id], function(err) {
+            if (err) return res.status(500).json({ error: "Database error" });
+            
+            res.status(201).json({ message: "assignment created successfully" });
+        });
     });
 };
 
