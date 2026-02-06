@@ -3,8 +3,7 @@ const db = require('../database.js');
 //hashing passwords
 const bcrypt = require('bcryptjs'); 
 
-const jwt = require('jsonwebtoken'); 
-const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const jwt = require('jsonwebtoken');
 //handle user registration
 const register = (req, res) => {
     const { name, email, password, role } = req.body;
@@ -50,6 +49,15 @@ const login = (req, res) => {
             if (!isMatch) {
                 return res.status(401).json({ error: "Invalid password" }); 
             }
-            
+
+            const token = jwt.sign(
+                { id: user.id, role: user.role }, 
+                process.env.JWT_SECRET, 
+                { expiresIn: '1h' }
+            );
+            res.json({ message: "Login successful!", token });
+        });
+    });
+
 }; 
 module.exports = { register, login };
