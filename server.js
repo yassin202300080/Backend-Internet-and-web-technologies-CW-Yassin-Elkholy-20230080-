@@ -7,7 +7,7 @@ app.use(express.json());
 
 const db = require('./database');
 const { register, login } = require('./controller/authController');
-const { createClassroom } = require('./controller/classroomController');
+const { createClassroom, joinClassroom } = require('./controller/classroomController');
 const verifyToken = require('./middleware/authMiddleware');
 console.log('Register function imported:', typeof register);
 
@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 app.post('/api/register', register);
 app.post('/api/login', login);
 app.post('/api/classrooms', verifyToken, createClassroom);
+app.post('/api/classrooms/join', verifyToken, joinClassroom);
 console.log('Route /api/register registered');
 
 const PORT = 3000;
