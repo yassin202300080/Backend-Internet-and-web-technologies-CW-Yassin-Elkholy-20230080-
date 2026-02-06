@@ -11,6 +11,25 @@ const createClassroom = (req, res) => {
     if (userRole !== 'Staff') {
         return res.status(403).json({ error: "Only Staff can create a classrooms" });
     }
+
+    if (!className) {
+        return res.status(400).json({ error: "Class Name is required" });
+    }
+
+    //creaing unique class code
+    const classCode = Math.random().toString(36).substring(2, 7).toUpperCase();
+
+    const sql = `INSERT INTO classrooms (classCode, className, staffId) VALUES (?, ?, ?)`;
+    
+    db.run(sql, [classCode, className, staffId], function(err) {
+        if (err) {
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.status(201).json({ 
+            message: "Classroom created!", 
+            classCode: classCode 
+        });
+    });
 };
 
 module.exports = { createClassroom };
