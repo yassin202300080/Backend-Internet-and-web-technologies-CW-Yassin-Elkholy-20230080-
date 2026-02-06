@@ -26,7 +26,17 @@ const db = new sqlite3.Database('./flashedu.db', (err) => {
             staffId INTEGER,
             FOREIGN KEY(staffId) REFERENCES users(id)
         )`);
-    }
+
+        //enrollment table to link students to classrooms
+        db.run(`CREATE TABLE IF NOT EXISTS enrolments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            studentId INTEGER,
+            classroomId INTEGER,
+            FOREIGN KEY(studentId) REFERENCES users(id),
+            FOREIGN KEY(classroomId) REFERENCES classrooms(id),
+            UNIQUE(studentId, classroomId)
+    )`);
+    console.log("database table created");
 });
 
 module.exports = db;
