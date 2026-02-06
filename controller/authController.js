@@ -37,5 +37,12 @@ const login = (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ error: "Missing email or password" });
     }
+
+    const sql = `SELECT * FROM users WHERE email = ?`;
+    db.get(sql, [email], (err, user) => {
+        if (err) return res.status(500).json({ error: "server error" });
+        
+        if (!user) return res.status(404).json({ error: "User not found" });
+        
 };
 module.exports = { register, login };
