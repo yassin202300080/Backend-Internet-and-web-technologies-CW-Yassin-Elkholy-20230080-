@@ -44,5 +44,12 @@ const login = (req, res) => {
         
         if (!user) return res.status(404).json({ error: "User not found" });
         
-};
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) return res.status(500).json({ error: "Error checking password" });
+            
+            if (!isMatch) {
+                return res.status(401).json({ error: "Invalid password" }); 
+            }
+            
+}; 
 module.exports = { register, login };
