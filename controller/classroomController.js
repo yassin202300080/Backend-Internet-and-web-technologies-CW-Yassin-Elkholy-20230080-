@@ -42,4 +42,4 @@ const joinClassroom = (req, res) => {
         return res.status(403).json({ error: "Only Students can join classrooms!" });
     }
 
-module.exports = { createClassroom };
+module.exports = { createClassroom, joinClassroom };
