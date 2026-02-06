@@ -36,7 +36,8 @@ const db = new sqlite3.Database('./flashedu.db', (err) => {
             FOREIGN KEY(classroomId) REFERENCES classrooms(id),
             UNIQUE(studentId, classroomId)
     )`);
-    console.log("database table created");
+        console.log("database table created");
+    }
 });
 
 module.exports = db;

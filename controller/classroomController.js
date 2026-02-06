@@ -42,4 +42,23 @@ const joinClassroom = (req, res) => {
         return res.status(403).json({ error: "Only Students can join classrooms!" });
     }
 
+    //find classroom by code
+    db.get(`SELECT id FROM classrooms WHERE classCode = ?`, [classCode], (err, classroom) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        
+        if (!classroom) {
+            return res.status(404).json({ error: "Invalid Class Code" });
+        }
+
+        // enrollments table to link students to classrooms
+        const sql = `INSERT INTO enrolments (studentId, classroomId) VALUES (?, ?)`;
+        db.run(sql, [studentId, classroom.id], function(err) {
+            if (err) {
+                return res.status(400).json({ error: "You already joined this class!" });
+            }
+            res.json({ message: "Successfully joined the class!" });
+        });
+    });
+};
+
 module.exports = { createClassroom, joinClassroom };
