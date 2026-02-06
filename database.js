@@ -36,6 +36,17 @@ const db = new sqlite3.Database('./flashedu.db', (err) => {
             FOREIGN KEY(classroomId) REFERENCES classrooms(id),
             UNIQUE(studentId, classroomId)
     )`);
+
+        //assignments table
+        db.run(`CREATE TABLE IF NOT EXISTS assignments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT,
+            dueDate TEXT NOT NULL,
+            classroomId INTEGER NOT NULL,
+            FOREIGN KEY(classroomId) REFERENCES classrooms(id)
+        )`);
+
         console.log("database table created");
     }
 });
