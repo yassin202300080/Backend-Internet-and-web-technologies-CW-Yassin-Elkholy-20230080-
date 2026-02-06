@@ -32,4 +32,14 @@ const createClassroom = (req, res) => {
     });
 };
 
+//join classroom for students 
+const joinClassroom = (req, res) => {
+    const studentId = req.user.id;
+    const role = req.user.role;
+    const { classCode } = req.body;
+
+    if (role !== 'Student') {
+        return res.status(403).json({ error: "Only Students can join classrooms!" });
+    }
+
 module.exports = { createClassroom };
