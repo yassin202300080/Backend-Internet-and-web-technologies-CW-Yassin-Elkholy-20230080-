@@ -31,4 +31,11 @@ const register = (req, res) => {
     });
 };
 
-module.exports = { register };
+//login
+const login = (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ error: "Missing email or password" });
+    }
+};
+module.exports = { register, login };
