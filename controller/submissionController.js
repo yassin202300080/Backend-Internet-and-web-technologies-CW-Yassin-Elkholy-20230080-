@@ -21,15 +21,28 @@ const submitAssignment = (req, res) => {
             return res.status(400).json({ error: "you have already submitted this assignment!" });
         }
 
-        // Save Submission
-        const sql = `INSERT INTO submissions (submissionText, assignmentId, studentId) VALUES (?, ?, ?)`;
-        
-        db.run(sql, [submissionText, assignmentId, studentId], function(err) {
-            if (err) {
-                console.log("SUBMISSION ERROR:", err.message);
-                return res.status(500).json({ error: "Database error" });
+        db.get(`SELECT due_date FROM assignments WHERE assignment_id = ?`, [assignmentId], (err, row) => {
+            if (err) return res.status(500).json({ error: "Database error" });
+            if (!row) return res.status(404).json({ error: "Assignment not found" });
+
+            //Check deadline
+            const dueDate = new Date(row.due_date);
+            const now = new Date();
+
+            if (now > dueDate) {
+                return res.status(400).json({ error: "Deadline has passed. Submission rejected." }); 
             }
-            res.status(201).json({ message: "assignment submitted successfully" });
+
+            // Save Submission
+            const sql = `INSERT INTO submissions (submissionText, assignmentId, studentId) VALUES (?, ?, ?)`;
+            
+            db.run(sql, [submissionText, assignmentId, studentId], function(err) {
+                if (err) {
+                    console.log("SUBMISSION ERROR:", err.message);
+                    return res.status(500).json({ error: "Database error" });
+                }
+                res.status(201).json({ message: "assignment submitted successfully" });
+            });
         });
     });
 };

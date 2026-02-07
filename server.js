@@ -10,7 +10,7 @@ const { register, login } = require('./controller/authController');
 const { createClassroom, joinClassroom } = require('./controller/classroomController');
 const verifyToken = require('./middleware/authMiddleware');
 const { createAssignment, getAssignments } = require('./controller/assignmentController');
-const { submitAssignment, getSubmissions } = require('./controller/submissionController');
+const { submitAssignment, getSubmissions, gradeSubmission } = require('./controller/submissionController');
 console.log('Register function imported:', typeof register);
 
 app.get('/', (req, res) => {
@@ -27,6 +27,7 @@ app.post('/api/assignments', verifyToken, createAssignment);
 app.get('/api/assignments', verifyToken, getAssignments);
 app.post('/api/submissions', verifyToken, submitAssignment);
 app.get('/api/assignments/:assignmentId/submissions', verifyToken, getSubmissions);
+app.post('/api/submissions/grade', verifyToken, gradeSubmission);
 
 const PORT = 3000;
 app.listen(PORT, () => {
