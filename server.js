@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const cors = require('cors');
 
 //middleware
 app.use(express.json());
+app.use(cors());
 
 const db = require('./database');
 const { register, login } = require('./controller/authController');
