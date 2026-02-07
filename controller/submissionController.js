@@ -55,4 +55,20 @@ const getSubmissions = (req, res) => {
     });
 };
 
-module.exports = { submitAssignment, getSubmissions };
+//grade submission
+const gradeSubmission = (req, res) => {
+    const { submissionId, grade, feedback } = req.body;
+
+    if (req.user.role !== 'Staff') {
+        return res.status(403).json({ error: "only staff can grade" });
+    }
+
+    const sql = `UPDATE submissions SET grade = ?, feedback = ? WHERE id = ?`;
+
+    db.run(sql, [grade, feedback, submissionId], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "gradded successfully" });
+    });
+};
+
+module.exports = { submitAssignment, getSubmissions, gradeSubmission };
