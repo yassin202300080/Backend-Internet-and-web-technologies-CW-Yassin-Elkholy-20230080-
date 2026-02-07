@@ -61,4 +61,29 @@ const joinClassroom = (req, res) => {
     });
 };
 
-module.exports = { createClassroom, joinClassroom };
+const getMyClassrooms = (req, res) => {
+    const userId = req.user.id;
+    const role = req.user.role;
+
+    let query;
+    let params = [userId];
+
+    if (role === 'Staff') {
+        // Staff view their  classes
+        query = `SELECT * FROM classrooms WHERE staffId = ?`;
+    } else {
+        //students view classes
+        query = `
+            SELECT classrooms.* FROM classrooms 
+            JOIN enrolments ON classrooms.id = enrolments.classroomId 
+            WHERE enrolments.studentId = ?
+        `;
+    }
+
+    db.all(query, params, (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+};
+
+module.exports = { createClassroom, joinClassroom, getMyClassrooms };
