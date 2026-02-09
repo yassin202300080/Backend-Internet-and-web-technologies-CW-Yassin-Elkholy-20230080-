@@ -31,9 +31,18 @@ const createAssignment = (req, res) => {
 };
 
 const getAssignments = (req, res) => {
-    const sql = `SELECT * FROM assignments`;
-    
-    db.all(sql, [], (err, rows) => {
+    //filter assignments by class id
+    const { classId } = req.query; 
+
+    let sql = 'SELECT * FROM assignments';
+    let params = [];
+
+    if (classId) {
+        sql += ' WHERE classroomId = ?';
+        params.push(classId);
+    }
+
+    db.all(sql, params, (err, rows) => {
         if (err) return res.status(500).json({ error: "Database error" });
         res.json(rows);
     });

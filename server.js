@@ -30,6 +30,7 @@ app.get('/api/assignments', verifyToken, getAssignments);
 app.post('/api/submissions', verifyToken, submitAssignment);
 app.get('/api/assignments/:assignmentId/submissions', verifyToken, getSubmissions);
 app.post('/api/submissions/grade', verifyToken, gradeSubmission);
+app.get('/api/classrooms', verifyToken, getMyClassrooms);
 
 const PORT = 3000;
 app.listen(PORT, () => {
