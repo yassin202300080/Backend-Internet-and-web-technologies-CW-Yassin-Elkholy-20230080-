@@ -9,7 +9,7 @@ app.use(cors());
 
 const db = require('./database');
 const { register, login } = require('./controller/authController');
-const { createClassroom, joinClassroom } = require('./controller/classroomController');
+const { createClassroom, joinClassroom, getMyClassrooms } = require('./controller/classroomController');
 const verifyToken = require('./middleware/authMiddleware');
 const { createAssignment, getAssignments } = require('./controller/assignmentController');
 const { submitAssignment, getSubmissions, gradeSubmission, getMySubmission } = require('./controller/submissionController');
