@@ -84,4 +84,18 @@ const gradeSubmission = (req, res) => {
     });
 };
 
-module.exports = { submitAssignment, getSubmissions, gradeSubmission };
+//check submsion for students
+const getMySubmission = (req, res) => {
+    const studentId = req.user.id;
+    const { assignmentId } = req.params;
+
+    const sql = `SELECT * FROM submissions WHERE studentId = ? AND assignmentId = ?`;
+
+    db.get(sql, [studentId, assignmentId], (err, row) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        if (!row) return res.json({ message: "no submission " });
+        res.json(row);
+    });
+};
+
+module.exports = { submitAssignment, getSubmissions, gradeSubmission, getMySubmission };
