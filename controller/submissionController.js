@@ -21,12 +21,12 @@ const submitAssignment = (req, res) => {
             return res.status(400).json({ error: "you have already submitted this assignment!" });
         }
 
-        db.get(`SELECT due_date FROM assignments WHERE assignment_id = ?`, [assignmentId], (err, row) => {
+        db.get(`SELECT dueDate FROM assignments WHERE id = ?`, [assignmentId], (err, row) => {
             if (err) return res.status(500).json({ error: "Database error" });
             if (!row) return res.status(404).json({ error: "Assignment not found" });
 
             //Check deadline
-            const dueDate = new Date(row.due_date);
+            const dueDate = new Date(row.dueDate);
             const now = new Date();
 
             if (now > dueDate) {
